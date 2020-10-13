@@ -29,7 +29,7 @@ pip install urllib3
 
 4.修改脚本中域名配置信息，可配置多个域名和多个子域名
 
-5.从[商店](https://shop.hostmonit.com)购买KEY，当然也可以用脚本中自带的，区别是脚本中自带的KEY是历史优选的Cloudflare IP（也可以从这个[网站](https://stock.hostmonit.com/cfyes)查到IP的信息），而购买的KEY是15分钟内获取到的最新的Cloudflare IP。
+5.从[商店](https://shop.hostmonit.com)购买KEY，当然也可以用脚本中自带的，区别是脚本中自带的KEY是历史优选的Cloudflare IP（也可以从这个[网站](https://stock.hostmonit.com/CloudFlareYes)查到IP的信息），而购买的KEY是15分钟内获取到的最新的Cloudflare IP。
 
 6.运行程序，如果能够正常运行可以选择cron定时执行（建议15分钟执行一次）
 
