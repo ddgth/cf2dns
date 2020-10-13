@@ -12,7 +12,7 @@
 
 >  必要条件: 
 >
-> ★ Cloudflare自选IP并已接入到DONSPod，不知道怎么自选IP可以查看这个[教程](https://hostmonit.com/manually-select-ip/)
+> ★ Cloudflare自选IP并已接入到DNSPod，不知道怎么自选IP可以查看这个[教程](https://hostmonit.com/manually-select-ip/)
 >
 > ★ Python3、pip环境
 >
