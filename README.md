@@ -2,7 +2,7 @@
 
 筛选出优质的Cloudflare IP（目前在暂不开源，以接口方式提供15分钟更新一次），并使用域名服务商提供的API解析到不同线路以达到网站加速的效果（目前只完成DNSPod，后续如果有需求将会加入其他运营商的）。
 
-**详细的使用场景请移步我的[小站](https://hostmonit.com/cloudflare-manuallyip-plus/)**
+**详细的使用场景请移步我的[小站](https://hostmonit.com/cloudflare-select-ip-plus/)**
 
 ### 适用人群
 
