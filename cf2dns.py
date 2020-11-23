@@ -95,7 +95,7 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
             for info in s_info:
                 if len(c_info) == 0:
                     break
-                cf_ip = c_info.pop(0)["ip"]
+                cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     continue
                 ret = qcloud.get(module='cns', action='RecordModify', domain=domain, recordId=info["recordId"], subDomain=sub_domain, value=cf_ip, recordType='A', recordLine=line)
@@ -107,19 +107,19 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
             for i in range(create_num):
                 if len(c_info) == 0:
                     break
-                cf_ip = c_info.pop(0)["ip"]
+                cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     continue
                 ret = qcloud.get(module='cns', action='RecordCreate', domain=domain, subDomain=sub_domain, value=cf_ip, recordType='A', recordLine=line)
                 if(ret["code"] == 0):
                     log_cf2dns.logger.info("CREATE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----VALUE: " + cf_ip )
                 else:
-                    log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip + "----MESSAGE: " + ret["message"] )
+                    log_cf2dns.logger.error("CREATE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip + "----MESSAGE: " + ret["message"] )
         else:
             for info in s_info:
                 if create_num == 0 or len(c_info) == 0:
                     break
-                cf_ip = c_info.pop(0)["ip"]
+                cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     create_num += 1
                     continue
@@ -148,6 +148,15 @@ def main(qcloud):
                     temp_cf_cmips = cf_cmips.copy()
                     temp_cf_cuips = cf_cuips.copy()
                     temp_cf_ctips = cf_ctips.copy()
+                    ret = qcloud.get(module='cns', action='RecordList', domain=domain, length=10, subDomain=sub_domain, recordType="CNAME")
+                    if ret["code"] == 0:
+                        for record in ret["data"]["records"]:
+                            if record["line"] != "默认":
+                                retMsg = qcloud.get(module='cns', action='RecordDelete', domain=domain, recordId=record["id"])
+                                if(retMsg["code"] == 0):
+                                    log_cf2dns.logger.info("DELETE DNS SUCCESS: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] )
+                                else:
+                                    log_cf2dns.logger.error("DELETE DNS ERROR: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] + "----MESSAGE: " + retMsg["message"] )
                     ret = qcloud.get(module='cns', action='RecordList', domain=domain, length=100, subDomain=sub_domain, recordType="A")
                     if ret["code"] == 0:
                         if "Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2:
