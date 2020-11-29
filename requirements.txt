@@ -1,1 +1,3 @@
+aliyun-python-sdk-alidns==2.6.19
+aliyun-python-sdk-core==2.13.29
 urllib3==1.25.10

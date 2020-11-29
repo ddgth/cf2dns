@@ -10,61 +10,35 @@ import operator
 import json
 import urllib.parse
 import urllib3
+from dns.qCloud import QcloudApi
+from dns.aliyun import AliApi
 from log import Logger
+import traceback
 
 #可以从https://shop.hostmonit.com获取
 KEY = "o1zrmHAF"
+
 #CM:移动 CU:联通 CT:电信
 #修改需要更改的dnspod域名核子域名
 DOMAINS = {
     "hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},
     "4096.me": {"@": ["CM","CU","CT"], "vv": ["CM","CU","CT"]}
 }
-#腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
-SECRETID = 'AKIDV**********Hfo8CzfjgN'
-SECRETKEY = 'ZrVs*************gqjOp1zVl'
-#默认为普通版本 不用修改
+
+#解析生效条数 免费的DNSPod相同线路最多支持2条解析
 AFFECT_NUM = 2
+
+#DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2
+DNS_SERVER = 1
+
+#API 密钥
+#腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
+#阿里云后台获取 https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53  注意需要添加DNS控制权限 AliyunDNSFullAccess
+SECRETID = 'AKIDVmxtxxxxxxxxxxxfo8CzfjgN'
+SECRETKEY = 'ZrVszqxxxxxxxxxxjOp1zVl'
 
 log_cf2dns = Logger('cf2dns.log', level='debug') 
 urllib3.disable_warnings()
-class QcloudApi():
-    def __init__(self):
-        self.SecretId = SECRETID
-        self.secretKey = SECRETKEY
-
-    def get(self, module, action, **params):
-        config = {
-            'Action': action,
-            'Nonce': random.randint(10000, 99999),
-            'SecretId': self.SecretId,
-            'SignatureMethod': 'HmacSHA256',
-            'Timestamp': int(time.time()),
-        }
-        url_base = '{0}.api.qcloud.com/v2/index.php?'.format(module)
-
-        params_all = dict(config, **params)
-
-        params_sorted = sorted(params_all.items(), key=operator.itemgetter(0))
-
-        srcStr = 'GET{0}'.format(url_base) + ''.join("%s=%s&" % (k, v) for k, v in dict(params_sorted).items())[:-1]
-        signStr = base64.b64encode(hmac.new(bytes(self.secretKey, encoding='utf-8'), bytes(srcStr, encoding='utf-8'), digestmod=hashlib.sha256).digest()).decode('utf-8')
-
-        config['Signature'] = signStr
-
-        params_last = dict(config, **params)
-
-        params_url = urllib.parse.urlencode(params_last)
-
-        url = 'https://{0}&'.format(url_base) + params_url
-        http = urllib3.PoolManager()
-        r = http.request('GET', url=url, retries=False)
-        ret = json.loads(r.data.decode('utf-8'))
-        if ret.get('code', {}) == 0:
-            return ret
-        else:
-            raise Exception(ret)
-
 
 def get_optimization_ip():
     try:
@@ -78,7 +52,7 @@ def get_optimization_ip():
         print(e)
         return None
 
-def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
+def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
     global AFFECT_NUM
     if line == "CM":
         line = "移动"
@@ -98,8 +72,8 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
                 cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     continue
-                ret = qcloud.get(module='cns', action='RecordModify', domain=domain, recordId=info["recordId"], subDomain=sub_domain, value=cf_ip, recordType='A', recordLine=line)
-                if(ret["code"] == 0):
+                ret = cloud.change_record(domain, info["recordId"], sub_domain, cf_ip, "A", line)
+                if(DNS_SERVER != 1 or ret["code"] == 0):
                     log_cf2dns.logger.info("CHANGE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip )
                 else:
                     log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip + "----MESSAGE: " + ret["message"] )
@@ -110,8 +84,8 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
                 cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     continue
-                ret = qcloud.get(module='cns', action='RecordCreate', domain=domain, subDomain=sub_domain, value=cf_ip, recordType='A', recordLine=line)
-                if(ret["code"] == 0):
+                ret = cloud.create_record(domain, sub_domain, cf_ip, "A", line)
+                if(DNS_SERVER != 1 or ret["code"] == 0):
                     log_cf2dns.logger.info("CREATE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----VALUE: " + cf_ip )
                 else:
                     log_cf2dns.logger.error("CREATE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip + "----MESSAGE: " + ret["message"] )
@@ -123,8 +97,8 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
                 if cf_ip in str(s_info):
                     create_num += 1
                     continue
-                ret = qcloud.get(module='cns', action='RecordModify', domain=domain, recordId=info["recordId"], subDomain=sub_domain, value=cf_ip, recordType='A', recordLine=line)
-                if(ret["code"] == 0):
+                ret = cloud.change_record(domain, info["recordId"], sub_domain, cf_ip, "A", line)
+                if(DNS_SERVER != 1 or ret["code"] == 0):
                     log_cf2dns.logger.info("CHANGE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip )
                 else:
                     log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip + "----MESSAGE: " + ret["message"] )
@@ -132,7 +106,7 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, qcloud):
     except Exception as e:
             log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(e))
 
-def main(qcloud):
+def main(cloud):
     global AFFECT_NUM
     if len(DOMAINS) > 0:
         try:
@@ -148,18 +122,19 @@ def main(qcloud):
                     temp_cf_cmips = cf_cmips.copy()
                     temp_cf_cuips = cf_cuips.copy()
                     temp_cf_ctips = cf_ctips.copy()
-                    ret = qcloud.get(module='cns', action='RecordList', domain=domain, length=10, subDomain=sub_domain, recordType="CNAME")
-                    if ret["code"] == 0:
-                        for record in ret["data"]["records"]:
-                            if record["line"] != "默认":
-                                retMsg = qcloud.get(module='cns', action='RecordDelete', domain=domain, recordId=record["id"])
-                                if(retMsg["code"] == 0):
-                                    log_cf2dns.logger.info("DELETE DNS SUCCESS: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] )
-                                else:
-                                    log_cf2dns.logger.error("DELETE DNS ERROR: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] + "----MESSAGE: " + retMsg["message"] )
-                    ret = qcloud.get(module='cns', action='RecordList', domain=domain, length=100, subDomain=sub_domain, recordType="A")
-                    if ret["code"] == 0:
-                        if "Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2:
+                    if DNS_SERVER == 1:
+                        ret = cloud.get_record(domain, 10, sub_domain, "CNAME")
+                        if ret["code"] == 0:
+                            for record in ret["data"]["records"]:
+                                if record["line"] != "默认":
+                                    retMsg = cloud.del_record(domain, record["id"])
+                                    if(retMsg["code"] == 0):
+                                        log_cf2dns.logger.info("DELETE DNS SUCCESS: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] )
+                                    else:
+                                        log_cf2dns.logger.error("DELETE DNS ERROR: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] + "----MESSAGE: " + retMsg["message"] )
+                    ret = cloud.get_record(domain, 100, sub_domain, "A")
+                    if DNS_SERVER != 1 or ret["code"] == 0 :
+                        if DNS_SERVER != 1 or ("Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2):
                             AFFECT_NUM = 2
                         cm_info = []
                         cu_info = []
@@ -182,14 +157,18 @@ def main(qcloud):
                                 ct_info.append(info)
                         for line in lines:
                             if line == "CM":
-                                changeDNS("CM", cm_info, temp_cf_cmips, domain, sub_domain, qcloud)
+                                changeDNS("CM", cm_info, temp_cf_cmips, domain, sub_domain, cloud)
                             elif line == "CU":
-                                changeDNS("CU", cu_info, temp_cf_cuips, domain, sub_domain, qcloud)
+                                changeDNS("CU", cu_info, temp_cf_cuips, domain, sub_domain, cloud)
                             elif line == "CT":
-                                changeDNS("CT", ct_info, temp_cf_ctips, domain, sub_domain, qcloud)
+                                changeDNS("CT", ct_info, temp_cf_ctips, domain, sub_domain, cloud)
         except Exception as e:
+            traceback.print_exc()  
             log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(e))
 
 if __name__ == '__main__':
-    qcloud = QcloudApi()
-    main(qcloud)
+    if DNS_SERVER == 1:
+        cloud = QcloudApi(SECRETID, SECRETKEY)
+    elif DNS_SERVER == 2:
+        cloud = AliApi(SECRETID, SECRETKEY)
+    main(cloud)
