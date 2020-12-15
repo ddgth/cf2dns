@@ -135,7 +135,7 @@ def main(cloud):
                     ret = cloud.get_record(domain, 100, sub_domain, "A")
                     if DNS_SERVER != 1 or ret["code"] == 0 :
                         if DNS_SERVER != 1 or ("Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2):
-                            AFFECT_NUM = 2
+                            AFFECT_NUM = 10
                         cm_info = []
                         cu_info = []
                         ct_info = []
