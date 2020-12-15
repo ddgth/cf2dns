@@ -21,7 +21,7 @@ DOMAINS = json.loads(os.environ["DOMAINS"])  #{"hostmonit.com": {"@": ["CM","CU"
 SECRETID = os.environ["SECRETID"]    #'AKIDV**********Hfo8CzfjgN'
 SECRETKEY = os.environ["SECRETKEY"]   #'ZrVs*************gqjOp1zVl'
 #默认为普通版本 不用修改
-AFFECT_NUM = 2
+AFFECT_NUM = 10
 
 
 urllib3.disable_warnings()
@@ -148,7 +148,7 @@ def main(qcloud):
                     ret = qcloud.get(module='cns', action='RecordList', domain=domain, length=100, subDomain=sub_domain, recordType="A")
                     if ret["code"] == 0:
                         if "Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2:
-                            AFFECT_NUM = 2
+                            AFFECT_NUM = 10
                         cm_info = []
                         cu_info = []
                         ct_info = []
