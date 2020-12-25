@@ -31,6 +31,9 @@ AFFECT_NUM = 2
 #DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2
 DNS_SERVER = 1
 
+#解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
+TTL = 600
+
 #API 密钥
 #腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
 #阿里云后台获取 https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53  注意需要添加DNS控制权限 AliyunDNSFullAccess
@@ -72,7 +75,7 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
                 cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     continue
-                ret = cloud.change_record(domain, info["recordId"], sub_domain, cf_ip, "A", line)
+                ret = cloud.change_record(domain, info["recordId"], sub_domain, cf_ip, "A", line, TTL)
                 if(DNS_SERVER != 1 or ret["code"] == 0):
                     log_cf2dns.logger.info("CHANGE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip )
                 else:
@@ -84,7 +87,7 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
                 cf_ip = c_info.pop(random.randint(0,len(c_info)-1))["ip"]
                 if cf_ip in str(s_info):
                     continue
-                ret = cloud.create_record(domain, sub_domain, cf_ip, "A", line)
+                ret = cloud.create_record(domain, sub_domain, cf_ip, "A", line, TTL)
                 if(DNS_SERVER != 1 or ret["code"] == 0):
                     log_cf2dns.logger.info("CREATE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----VALUE: " + cf_ip )
                 else:
@@ -97,7 +100,7 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
                 if cf_ip in str(s_info):
                     create_num += 1
                     continue
-                ret = cloud.change_record(domain, info["recordId"], sub_domain, cf_ip, "A", line)
+                ret = cloud.change_record(domain, info["recordId"], sub_domain, cf_ip, "A", line, TTL)
                 if(DNS_SERVER != 1 or ret["code"] == 0):
                     log_cf2dns.logger.info("CHANGE DNS SUCCESS: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip )
                 else:
@@ -134,7 +137,7 @@ def main(cloud):
                                         log_cf2dns.logger.error("DELETE DNS ERROR: ----Time: "  + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+record["line"] + "----MESSAGE: " + retMsg["message"] )
                     ret = cloud.get_record(domain, 100, sub_domain, "A")
                     if DNS_SERVER != 1 or ret["code"] == 0 :
-                        if DNS_SERVER != 1 or ("Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2):
+                        if DNS_SERVER == 1 and "Free" in ret["data"]["domain"]["grade"] and AFFECT_NUM > 2:
                             AFFECT_NUM = 2
                         cm_info = []
                         cu_info = []

@@ -37,7 +37,7 @@ class AliApi():
         result = json.JSONDecoder().decode(result)
         return result
 
-    def create_record(self, domain, sub_domain, value, record_type, line):
+    def create_record(self, domain, sub_domain, value, record_type, line, ttl):
         clt = client.AcsClient(self.access_key_id, self.access_key_secret, 'cn-hangzhou')
         request = AddDomainRecordRequest.AddDomainRecordRequest()
         request.set_DomainName(domain)
@@ -51,12 +51,13 @@ class AliApi():
         request.set_Line(line)
         request.set_Type(record_type)
         request.set_Value(value)
+        request.set_TTL(ttl)
         request.set_accept_format(rc_format)
         result = clt.do_action(request).decode('utf-8')
         result = json.JSONDecoder().decode(result)
         return result
         
-    def change_record(self, domain, record_id, sub_domain, value, record_type, line):
+    def change_record(self, domain, record_id, sub_domain, value, record_type, line, ttl):
         clt = client.AcsClient(self.access_key_id, self.access_key_secret, 'cn-hangzhou')
         request = UpdateDomainRecordRequest.UpdateDomainRecordRequest()
         request.set_RR(sub_domain)
@@ -70,6 +71,7 @@ class AliApi():
         request.set_Line(line)
         request.set_Type(record_type)
         request.set_Value(value)
+        request.set_TTL(ttl)
         request.set_accept_format(rc_format)
         result = clt.do_action(request).decode('utf-8')
         result = json.JSONDecoder().decode(result)

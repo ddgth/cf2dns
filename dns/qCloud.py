@@ -55,8 +55,8 @@ class QcloudApi():
     def get_record(self, domain, length, sub_domain, record_type):
         return self.get(module = 'cns', action = 'RecordList', domain = domain, length = length, subDomain = sub_domain, recordType = record_type)
 
-    def create_record(self, domain, sub_domain, value, record_type, line):
-        return self.get(module = 'cns', action = 'RecordCreate', domain = domain, subDomain = sub_domain, value = value, recordType = record_type, recordLine = line)
+    def create_record(self, domain, sub_domain, value, record_type, line, ttl):
+        return self.get(module = 'cns', action = 'RecordCreate', domain = domain, subDomain = sub_domain, value = value, recordType = record_type, recordLine = line, ttl = ttl)
 
-    def change_record(self, domain, record_id, sub_domain, value, record_type, line):
-        return self.get(module = 'cns', action = 'RecordModify', domain = domain, recordId =record_id, subDomain = sub_domain, value = value, recordType = record_type, recordLine = line)
+    def change_record(self, domain, record_id, sub_domain, value, record_type, line, ttl):
+        return self.get(module = 'cns', action = 'RecordModify', domain = domain, recordId =record_id, subDomain = sub_domain, value = value, recordType = record_type, recordLine = line, ttl = ttl)
