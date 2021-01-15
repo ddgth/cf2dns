@@ -1,4 +1,4 @@
-name: 'CloudFlare2DNSPod'
+name: 'CloudFlareCDN2DNSPod'
 
 on:
   push:
