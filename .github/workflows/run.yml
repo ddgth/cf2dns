@@ -1,4 +1,4 @@
-name: 'CloudFlare2DNSPod'
+name: 'CloudFlare2DNSPod bot'
 
 on:
   push:
