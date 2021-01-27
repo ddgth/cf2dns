@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Mail: tongdongdong@outlook.com
+# change cm to default line
 import base64
 import hashlib
 import hmac
@@ -16,7 +17,7 @@ from dns.aliyun import AliApi
 
 #可以从https://shop.hostmonit.com获取
 KEY = os.environ["KEY"]  #"o1zrmHAF"
-#CM:移动 CU:联通 CT:电信
+#CM:默认 CU:联通 CT:电信
 #修改需要更改的dnspod域名核子域名
 DOMAINS = json.loads(os.environ["DOMAINS"])  #{"hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},"4096.me": {"@": ["CM","CU","CT"], "vv": ["CM","CU","CT"]}}
 #腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
@@ -46,7 +47,7 @@ def get_optimization_ip():
 def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
     global AFFECT_NUM
     if line == "CM":
-        line = "移动"
+        line = "默认"
     elif line == "CU":
         line = "联通"
     elif line == "CT":
@@ -131,7 +132,7 @@ def main(cloud):
                         cu_info = []
                         ct_info = []
                         for record in ret["data"]["records"]:
-                            if record["line"] == "移动":
+                            if record["line"] == "默认":
                                 info = {}
                                 info["recordId"] = record["id"]
                                 info["value"] = record["value"]
