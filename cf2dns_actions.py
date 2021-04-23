@@ -11,6 +11,7 @@ import json
 import urllib.parse
 import urllib3
 import os
+import traceback
 from dns.qCloud import QcloudApi
 from dns.aliyun import AliApi
 
@@ -40,7 +41,7 @@ def get_optimization_ip():
         response = http.request('POST','https://api.hostmonit.com/get_optimization_ip',body=data, headers=headers)
         return json.loads(response.data.decode('utf-8'))
     except Exception as e:
-        print(e)
+        print(traceback.print_exc())
         return None
 
 def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
@@ -95,7 +96,7 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
                     print("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----DOMAIN: " + domain + "----SUBDOMAIN: " + sub_domain + "----RECORDLINE: "+line+"----RECORDID: " + str(info["recordId"]) + "----VALUE: " + cf_ip + "----MESSAGE: " + ret["message"] )
                 create_num += 1
     except Exception as e:
-            print("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(e))
+            print("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(traceback.print_exc()))
 
 def main(cloud):
     global AFFECT_NUM
@@ -154,7 +155,7 @@ def main(cloud):
                             elif line == "CT":
                                 changeDNS("CT", ct_info, temp_cf_ctips, domain, sub_domain, cloud)
         except Exception as e:
-            print("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(e))
+            print("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(traceback.print_exc()))
 
 if __name__ == '__main__':
     if DNS_SERVER == 1:
