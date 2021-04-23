@@ -104,7 +104,7 @@ def main(cloud):
         try:
             cfips = get_optimization_ip()
             if cfips == None or cfips["code"] != 200:
-                print("GET CLOUDFLARE IP ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(cfips["info"]))
+                print("GET CLOUDFLARE IP ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) )
                 return
             cf_cmips = cfips["info"]["CM"]
             cf_cuips = cfips["info"]["CU"]
