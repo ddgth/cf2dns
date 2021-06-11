@@ -1,8 +1,12 @@
+如果你使用的华为云 那么请移步 https://github.com/Arronlong/py_scripts/tree/master/scripts/cf2dns
+感谢小伙伴的辛勤付出 搞定了华为云这个世纪难题
+
 ### 功能介绍
 
 筛选出优质的Cloudflare IP（目前在暂不开源，以接口方式提供15分钟更新一次），并使用域名服务商提供的API解析到不同线路以达到网站加速的效果（目前只完成DNSPod和阿里云DNS，后续如果有需求将会加入其他运营商的）。
 
 **详细的使用场景请移步我的[小站](https://hostmonit.com/cloudflare-select-ip-plus/)**
+
 
 ### 适用人群
 
