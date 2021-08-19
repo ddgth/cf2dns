@@ -28,7 +28,7 @@ AFFECT_NUM = 10
 #DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2
 DNS_SERVER = 1
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
-TTL = 60
+TTL = 600
 
 urllib3.disable_warnings()
 
