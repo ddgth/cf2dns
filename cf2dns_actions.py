@@ -15,7 +15,7 @@ from dns.qCloud import QcloudApi
 from dns.aliyun import AliApi
 
 #可以从https://shop.hostmonit.com获取
-KEY = os.environ["KEY"]  #"o1zrmHAF"
+KEY = os.environ["KEY"]  #"GbtaIvCucTen"
 #CM:移动 CU:联通 CT:电信
 #修改需要更改的dnspod域名核子域名
 DOMAINS = json.loads(os.environ["DOMAINS"])  #{"hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},"4096.me": {"@": ["CM","CU","CT"], "vv": ["CM","CU","CT"]}}
