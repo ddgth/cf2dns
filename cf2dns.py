@@ -24,7 +24,7 @@ DOMAINS = {
     "qq1396494941.xyz": {"@": ["CM","CU","CT"],"CDN": ["CM","CU","CT"],"yd": ["CM"],"lt": ["CU"],"dx": ["CT"]}
 }
 #解析生效条数 免费的DNSPod相同线路最多支持2条解析
-AFFECT_NUM = 5
+AFFECT_NUM = 4
 
 #DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2
 DNS_SERVER = 1
