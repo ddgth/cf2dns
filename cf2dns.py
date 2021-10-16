@@ -21,7 +21,7 @@ KEY = "o1zrmHAF"
 #CM:移动 CU:联通 CT:电信
 #修改需要更改的dnspod域名核子域名
 DOMAINS = {
-    "qq1396494941.xyz": {"@": ["CM","CU","CT"],"CDN": ["CM","CU","CT"],"yd": ["CM"],"lt": ["CU"],"dx": ["CT"]}
+    "qq1396494941.xyz": {"@": ["CM",CM","CU","CU","CT","CT"],"CDN": ["CM","CU","CT"],"yd": ["CM"],"lt": ["CU"],"dx": ["CT"]}
 }
 #解析生效条数 免费的DNSPod相同线路最多支持2条解析
 AFFECT_NUM = 4
