@@ -48,6 +48,10 @@ class AliApi():
             line = "unicom"
         elif line == "移动":
             line = "mobile"
+        elif line == "境外":
+            line = "oversea"
+        elif line == "默认":
+            line = "default"
         request.set_Line(line)
         request.set_Type(record_type)
         request.set_Value(value)
@@ -68,6 +72,10 @@ class AliApi():
             line = "unicom"
         elif line == "移动":
             line = "mobile"
+        elif line == "境外":
+            line = "oversea"
+        elif line == "默认":
+            line = "default"
         request.set_Line(line)
         request.set_Type(record_type)
         request.set_Value(value)
