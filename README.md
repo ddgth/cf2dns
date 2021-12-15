@@ -44,7 +44,31 @@
 >
 > ★ Python3、pip环境
 
-#### 方法一：GitHub Actions 运行（推荐）
+#### 方法一：在自己的VPS或电脑中运行（推荐）
+
+1. 安装运行脚本所需依赖
+
+```python
+pip install -r requirements.txt
+```
+
+2. 登录[腾讯云后台](https://console.cloud.tencent.com/cam/capi)或者[阿里云后台](https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53),获取 SecretId、SecretKey，如果使用阿里云DNS，注意需要添加DNS控制权限**AliyunDNSFullAccess**
+
+3. 将脚本下载到本地修改cf2dns.py中的SecretId、SecretKey
+
+4. 修改脚本中域名配置信息，可配置多个域名和多个子域名，注意选择DNS服务商
+
+5. (可选)从[商店](https://shop.hostmonit.com)购买KEY，当然也可以用脚本中自带的，区别是脚本中自带的KEY是历史优选的Cloudflare IP(也可以从这个[网站](https://stock.hostmonit.com/CloudFlareYes)查到IP的信息)，而购买的KEY是15分钟内获取到的最新的Cloudflare IP。
+
+6. 运行程序，如果能够正常运行可以选择cron定时执行(建议15分钟执行一次)
+
+```python
+python cf2dns.py
+```
+
+
+
+#### 方法二：GitHub Actions 运行
 
 1. 登录[腾讯云后台](https://console.cloud.tencent.com/cam/capi)或者[阿里云后台](https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53),获取 SecretId、SecretKey，如果使用阿里云DNS，注意需要添加DNS控制权限**AliyunDNSFullAccess**
 
@@ -70,30 +94,6 @@
    
 
    ![build.png](https://img.hostmonit.com/images/2020/11/05/build.png)
-
-#### 方法二：在自己的VPS或电脑中运行
-
-1. 安装运行脚本所需依赖
-
-```python
-pip install -r requirements.txt
-```
-
-2. 登录[腾讯云后台](https://console.cloud.tencent.com/cam/capi)或者[阿里云后台](https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53),获取 SecretId、SecretKey，如果使用阿里云DNS，注意需要添加DNS控制权限**AliyunDNSFullAccess**
-
-3. 将脚本下载到本地修改cf2dns.py中的SecretId、SecretKey
-
-4. 修改脚本中域名配置信息，可配置多个域名和多个子域名，注意选择DNS服务商
-
-5. (可选)从[商店](https://shop.hostmonit.com)购买KEY，当然也可以用脚本中自带的，区别是脚本中自带的KEY是历史优选的Cloudflare IP(也可以从这个[网站](https://stock.hostmonit.com/CloudFlareYes)查到IP的信息)，而购买的KEY是15分钟内获取到的最新的Cloudflare IP。
-
-6. 运行程序，如果能够正常运行可以选择cron定时执行(建议15分钟执行一次)
-
-```python
-python cf2dns.py
-```
-
-
 
 ### 免责声明
 
