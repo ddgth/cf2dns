@@ -1,9 +1,9 @@
-name: 'GitHub Actions CloudFlare2DNSPod Bot'
+name: 'xiaoma124837-patch-1'
 
 on:
   push:
     branches: 
-      - master
+      - xiaoma124837-patch-1
   schedule:
     - cron: '*/60 * * * *'
 
