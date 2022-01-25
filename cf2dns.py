@@ -32,7 +32,7 @@ AFFECT_NUM = 2
 DNS_SERVER = 1
 
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
-TTL = 600
+TTL = 60
 
 #API 密钥
 #腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
