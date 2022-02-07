@@ -33,7 +33,7 @@ class AliApi():
         request.set_RRKeyWord(sub_domain)
         request.set_Type(record_type)
         request.set_accept_format(rc_format)
-        result = clt.do_action(request).decode('utf-8').replace('DomainRecords', 'data', 1).replace('Record', 'records', 1).replace('RecordId', 'id').replace('Value', 'value').replace('Line', 'line').replace('telecom', '电信').replace('unicom', '联通').replace('mobile', '移动')
+        result = clt.do_action(request).decode('utf-8').replace('DomainRecords', 'data', 1).replace('Record', 'records', 1).replace('RecordId', 'id').replace('Value', 'value').replace('Line', 'line').replace('telecom', '电信').replace('unicom', '联通').replace('mobile', '移动').replace('oversea', '境外').replace('default', '默认')
         result = json.JSONDecoder().decode(result)
         return result
 
@@ -48,6 +48,10 @@ class AliApi():
             line = "unicom"
         elif line == "移动":
             line = "mobile"
+        elif line == "境外":
+            line = "oversea"
+        elif line == "默认":
+            line = "default"
         request.set_Line(line)
         request.set_Type(record_type)
         request.set_Value(value)
@@ -68,6 +72,10 @@ class AliApi():
             line = "unicom"
         elif line == "移动":
             line = "mobile"
+        elif line == "境外":
+            line = "oversea"
+        elif line == "默认":
+            line = "default"
         request.set_Line(line)
         request.set_Type(record_type)
         request.set_Value(value)
