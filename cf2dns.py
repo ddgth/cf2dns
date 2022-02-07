@@ -10,20 +10,18 @@ import operator
 import json
 import urllib.parse
 import urllib3
-from dns.qCloud import QcloudApi
-from dns.aliyun import AliApi
+from _dns.qCloud import QcloudApi
+from _dns.aliyun import AliApi
 from log import Logger
 import traceback
 
 #可以从https://shop.hostmonit.com获取
-KEY = "o1zrmHAF"
+KEY = "BGs4dQ5q0w5n"
 
 #CM:移动 CU:联通 CT:电信
 #修改需要更改的dnspod域名核子域名
 DOMAINS = {
-    "hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},
-    "4096.me": {"@": ["CM","CU","CT"], "vv": ["CM","CU","CT"]}
-}
+    "18moe.net": {"@": ["CM","CU","CT"], "tc": ["CM", "CU", "CT"], "url": ["CM","CU","CT"], "appgx": ["CM","CU","CT"], "www": ["CM","CU","CT"]}}
 
 #解析生效条数 免费的DNSPod相同线路最多支持2条解析
 AFFECT_NUM = 2
@@ -63,6 +61,10 @@ def changeDNS(line, s_info, c_info, domain, sub_domain, cloud):
         line = "联通"
     elif line == "CT":
         line = "电信"
+    elif line == "AB":
+        line = "境外"
+    elif line == "DEF":
+        line = "默认"
     else:
         log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: LINE ERROR")
         return
@@ -125,6 +127,8 @@ def main(cloud):
                     temp_cf_cmips = cf_cmips.copy()
                     temp_cf_cuips = cf_cuips.copy()
                     temp_cf_ctips = cf_ctips.copy()
+                    temp_cf_abips = cf_ctips.copy()
+                    temp_cf_defips = cf_ctips.copy()
                     if DNS_SERVER == 1:
                         ret = cloud.get_record(domain, 20, sub_domain, "CNAME")
                         if ret["code"] == 0:
@@ -142,6 +146,8 @@ def main(cloud):
                         cm_info = []
                         cu_info = []
                         ct_info = []
+                        ab_info = []
+                        def_info = []
                         for record in ret["data"]["records"]:
                             if record["line"] == "移动":
                                 info = {}
@@ -158,6 +164,16 @@ def main(cloud):
                                 info["recordId"] = record["id"]
                                 info["value"] = record["value"]
                                 ct_info.append(info)
+                            if record["line"] == "境外":
+                                info = {}
+                                info["recordId"] = record["id"]
+                                info["value"] = record["value"]
+                                ab_info.append(info)
+                            if record["line"] == "默认":
+                                info = {}
+                                info["recordId"] = record["id"]
+                                info["value"] = record["value"]
+                                def_info.append(info)
                         for line in lines:
                             if line == "CM":
                                 changeDNS("CM", cm_info, temp_cf_cmips, domain, sub_domain, cloud)
@@ -165,6 +181,10 @@ def main(cloud):
                                 changeDNS("CU", cu_info, temp_cf_cuips, domain, sub_domain, cloud)
                             elif line == "CT":
                                 changeDNS("CT", ct_info, temp_cf_ctips, domain, sub_domain, cloud)
+                            elif line == "AB":
+                                changeDNS("AB", ab_info, temp_cf_abips, domain, sub_domain, cloud)
+                            elif line == "DEF":
+                                changeDNS("DEF", def_info, temp_cf_defips, domain, sub_domain, cloud)
         except Exception as e:
             traceback.print_exc()  
             log_cf2dns.logger.error("CHANGE DNS ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + "----MESSAGE: " + str(e))
