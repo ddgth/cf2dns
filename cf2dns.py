@@ -49,7 +49,7 @@ def get_optimization_ip():
         headers = headers = {'Content-Type': 'application/json'}
         data = {"key": KEY}
         data = json.dumps(data).encode()
-        response = http.request('POST','https://api.hostmonit.com/get_optimization_ip',body=data, headers=headers)
+        response = http.request('POST','https://api.hostmonit.com/get_optimization_ip_without104',body=data, headers=headers)
         return json.loads(response.data.decode('utf-8'))
     except Exception as e:
         print(e)
