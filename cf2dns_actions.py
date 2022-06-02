@@ -111,8 +111,8 @@ def main(cloud):
             cf_ctips = cfips["info"]["CT"]
             for domain, sub_domains in DOMAINS.items():
                 for sub_domain, lines in sub_domains.items():
-                    temp_cf_cmips = cf_cmips.copy()
-                    temp_cf_cuips = cf_cuips.copy()
+                    #temp_cf_cmips = cf_cmips.copy()
+                    #temp_cf_cuips = cf_cuips.copy()
                     temp_cf_ctips = cf_ctips.copy()
                     if DNS_SERVER == 1:
                         ret = cloud.get_record(domain, 20, sub_domain, "CNAME")
