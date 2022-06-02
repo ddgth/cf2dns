@@ -106,8 +106,8 @@ def main(cloud):
             if cfips == None or cfips["code"] != 200:
                 print("GET CLOUDFLARE IP ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) )
                 return
-            cf_cmips = cfips["info"]["CM"]
-            cf_cuips = cfips["info"]["CU"]
+            #cf_cmips = cfips["info"]["CM"]
+            #cf_cuips = cfips["info"]["CU"]
             cf_ctips = cfips["info"]["CT"]
             for domain, sub_domains in DOMAINS.items():
                 for sub_domain, lines in sub_domains.items():
