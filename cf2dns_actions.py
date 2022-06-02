@@ -38,7 +38,7 @@ def get_optimization_ip():
         headers = headers = {'Content-Type': 'application/json'}
         data = {"key": KEY}
         data = json.dumps(data).encode()
-        response = http.request('POST','https://api.hostmonit.com/get_optimization_ip_without104',body=data, headers=headers)
+        response = http.request('POST','https://api.hostmonit.com/get_optimization_ip',body=data, headers=headers)
         return json.loads(response.data.decode('utf-8'))
     except Exception as e:
         print(traceback.print_exc())
@@ -106,13 +106,13 @@ def main(cloud):
             if cfips == None or cfips["code"] != 200:
                 print("GET CLOUDFLARE IP ERROR: ----Time: " + str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) )
                 return
-            #cf_cmips = cfips["info"]["CM"]
-            #cf_cuips = cfips["info"]["CU"]
+            cf_cmips = cfips["info"]["CM"]
+            cf_cuips = cfips["info"]["CU"]
             cf_ctips = cfips["info"]["CT"]
             for domain, sub_domains in DOMAINS.items():
                 for sub_domain, lines in sub_domains.items():
-                    #temp_cf_cmips = cf_cmips.copy()
-                    #temp_cf_cuips = cf_cuips.copy()
+                    temp_cf_cmips = cf_cmips.copy()
+                    temp_cf_cuips = cf_cuips.copy()
                     temp_cf_ctips = cf_ctips.copy()
                     if DNS_SERVER == 1:
                         ret = cloud.get_record(domain, 20, sub_domain, "CNAME")
