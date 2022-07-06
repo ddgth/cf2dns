@@ -1,5 +1,5 @@
 ### 新增优选IPv6功能 ——update 2022.07.06
-> 实现方法
+> 使用方法
 
 ​	更新代码，修改脚本中的 `TYPE` 参数即可
 
@@ -45,9 +45,9 @@
 
 >  必要条件: 
 >
-> ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://hostmonit.com/manually-select-ip/)
+>  ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://hostmonit.com/manually-select-ip/)
 >
-> ★ Python3、pip环境
+>  ★ Python3、pip环境
 
 #### 方法一：在自己的VPS或电脑中运行（推荐）
 
@@ -92,7 +92,6 @@ python cf2dns.py
 
    ![modify.png](https://img.hostmonit.com/images/2020/11/05/modify.png)
 
-   
 
    ![commit.png](https://img.hostmonit.com/images/2020/11/05/commit.png)
 
