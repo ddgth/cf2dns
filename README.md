@@ -30,7 +30,7 @@
 
 筛选出优质的Cloudflare IP（目前在暂不开源，以接口方式提供15分钟更新一次），并使用域名服务商提供的API解析到不同线路以达到网站加速的效果（目前只完成DNSPod和阿里云DNS，后续如果有需求将会加入其他运营商的）。
 
-**详细的使用场景请移步我的[小站](https://hostmonit.com/cloudflare-select-ip-plus/)**
+**详细的使用场景请移步我的[小站](https://blog.hostmonit.com/cloudflare-select-ip-plus/)**
 
 
 ### 适用人群
@@ -43,7 +43,7 @@
 
 >  必要条件: 
 >
->  ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://hostmonit.com/manually-select-ip/)
+>  ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://blog.hostmonit.com/manually-select-ip/)
 >
 >  ★ Python3、pip环境
 
