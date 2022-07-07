@@ -1,6 +1,9 @@
-### 新增默认线路记录 ——update 2021.12.15
+### 新增优选IPv6功能 ——update 2022.07.06
+> 使用方法
 
-详情查看addline分支
+​	更新代码，修改脚本中的 `TYPE` 参数即可
+
+### 新增默认线路记录 ——update 2021.12.15
 
 如果需要使用默认线路，请将默认线路的cname记录移除或改为其他线路
 
@@ -27,7 +30,7 @@
 
 筛选出优质的Cloudflare IP（目前在暂不开源，以接口方式提供15分钟更新一次），并使用域名服务商提供的API解析到不同线路以达到网站加速的效果（目前只完成DNSPod和阿里云DNS，后续如果有需求将会加入其他运营商的）。
 
-**详细的使用场景请移步我的[小站](https://hostmonit.com/cloudflare-select-ip-plus/)**
+**详细的使用场景请移步我的[小站](https://blog.hostmonit.com/cloudflare-select-ip-plus/)**
 
 
 ### 适用人群
@@ -40,9 +43,9 @@
 
 >  必要条件: 
 >
-> ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://hostmonit.com/manually-select-ip/)
+>  ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://blog.hostmonit.com/manually-select-ip/)
 >
-> ★ Python3、pip环境
+>  ★ Python3、pip环境
 
 #### 方法一：在自己的VPS或电脑中运行（推荐）
 
@@ -87,7 +90,6 @@ python cf2dns.py
 
    ![modify.png](https://img.hostmonit.com/images/2020/11/05/modify.png)
 
-   
 
    ![commit.png](https://img.hostmonit.com/images/2020/11/05/commit.png)
 
