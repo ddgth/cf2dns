@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Mail: tongdongdong@outlook.com
-import base64
-import hashlib
-import hmac
 import random
 import time
-import operator
 import json
-import urllib.parse
 import urllib3
 from dns.qCloud import QcloudApi
 from dns.aliyun import AliApi
+from dns.huawei import HuaWeiApi
 from log import Logger
 import traceback
 
@@ -21,14 +17,14 @@ KEY = "o1zrmHAF"
 #CM:移动 CU:联通 CT:电信  AB:境外 DEF:默认
 #修改需要更改的dnspod域名和子域名
 DOMAINS = {
-    "hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},
+    "hostxxnit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},
     "xxxx.me": {"@": ["CM","CU","CT"], "vv": ["CM","CU","CT"]}
 }
 
 #解析生效条数 免费的DNSPod相同线路最多支持2条解析
 AFFECT_NUM = 2
 
-#DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2
+#DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2  如果使用华为云解析改成3
 DNS_SERVER = 1
 
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
@@ -40,8 +36,9 @@ TYPE = 'v4'
 #API 密钥
 #腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
 #阿里云后台获取 https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53  注意需要添加DNS控制权限 AliyunDNSFullAccess
-SECRETID = 'AKIDVmxtxxxxxxxxxxxfo8CzfjgN'
-SECRETKEY = 'ZrVszqxxxxxxxxxxjOp1zVl'
+#华为云后台获取 https://support.huaweicloud.com/devg-apisign/api-sign-provide-aksk.html
+SECRETID = 'WTTCWxxxxxxxxx84O0V'
+SECRETKEY = 'GXkG6D4X1Nxxxxxxxxxxxxxxxxxxxxx4lRg6lT'
 
 log_cf2dns = Logger('cf2dns.log', level='debug') 
 urllib3.disable_warnings()
@@ -208,4 +205,6 @@ if __name__ == '__main__':
         cloud = QcloudApi(SECRETID, SECRETKEY)
     elif DNS_SERVER == 2:
         cloud = AliApi(SECRETID, SECRETKEY)
+    elif DNS_SERVER == 3:
+        cloud = HuaWeiApi(SECRETID, SECRETKEY)
     main(cloud)

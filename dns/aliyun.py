@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Mail: tongdongdong@outlook.com
 # Reference: https://help.aliyun.com/document_detail/29776.html?spm=a2c4g.11186623.2.38.3fc33efexrOFkT
+# REGION: https://help.aliyun.com/document_detail/198326.html
 import json
 from aliyunsdkcore import client
 from aliyunsdkalidns.request.v20150109 import DescribeDomainRecordsRequest
@@ -12,12 +13,13 @@ from aliyunsdkalidns.request.v20150109 import AddDomainRecordRequest
 
 rc_format = 'json'
 class AliApi():
-    def __init__(self, ACCESSID, SECRETKEY):
+    def __init__(self, ACCESSID, SECRETKEY, REGION='cn-hongkong'):
         self.access_key_id = ACCESSID
         self.access_key_secret = SECRETKEY
+        self.region = REGION
 
     def del_record(self, domain, record):
-        clt = client.AcsClient(self.access_key_id, self.access_key_secret, 'cn-hangzhou')
+        clt = client.AcsClient(self.access_key_id, self.access_key_secret, self.region)
         request = DeleteDomainRecordRequest.DeleteDomainRecordRequest()
         request.set_RecordId(record)
         request.set_accept_format(rc_format)
@@ -26,7 +28,7 @@ class AliApi():
         return result
 
     def get_record(self, domain, length, sub_domain, record_type):
-        clt = client.AcsClient(self.access_key_id, self.access_key_secret, 'cn-hangzhou')
+        clt = client.AcsClient(self.access_key_id, self.access_key_secret, self.region)
         request = DescribeDomainRecordsRequest.DescribeDomainRecordsRequest()
         request.set_DomainName(domain)
         request.set_PageSize(length)
@@ -38,7 +40,7 @@ class AliApi():
         return result
 
     def create_record(self, domain, sub_domain, value, record_type, line, ttl):
-        clt = client.AcsClient(self.access_key_id, self.access_key_secret, 'cn-hangzhou')
+        clt = client.AcsClient(self.access_key_id, self.access_key_secret, self.region)
         request = AddDomainRecordRequest.AddDomainRecordRequest()
         request.set_DomainName(domain)
         request.set_RR(sub_domain)
@@ -62,7 +64,7 @@ class AliApi():
         return result
         
     def change_record(self, domain, record_id, sub_domain, value, record_type, line, ttl):
-        clt = client.AcsClient(self.access_key_id, self.access_key_secret, 'cn-hangzhou')
+        clt = client.AcsClient(self.access_key_id, self.access_key_secret, self.region)
         request = UpdateDomainRecordRequest.UpdateDomainRecordRequest()
         request.set_RR(sub_domain)
         request.set_RecordId(record_id)
