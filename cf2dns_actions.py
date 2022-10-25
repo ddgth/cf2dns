@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Mail: tongdongdong@outlook.com
-import base64
-import hashlib
-import hmac
 import random
 import time
-import operator
 import json
-import urllib.parse
 import urllib3
 import os
 import traceback
 from dns.qCloud import QcloudApi
 from dns.aliyun import AliApi
+from dns.huawei import HuaWeiApi
 
 #可以从https://shop.hostmonit.com获取
 KEY = os.environ["KEY"]  #"o1zrmHAF"
@@ -25,7 +21,7 @@ SECRETID = os.environ["SECRETID"]    #'AKIDV**********Hfo8CzfjgN'
 SECRETKEY = os.environ["SECRETKEY"]   #'ZrVs*************gqjOp1zVl'
 #默认为普通版本 不用修改
 AFFECT_NUM = 2
-#DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2
+#DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2  如果使用华为云解析改成3
 DNS_SERVER = 1
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
 TTL = 600
@@ -195,4 +191,6 @@ if __name__ == '__main__':
         cloud = QcloudApi(SECRETID, SECRETKEY)
     elif DNS_SERVER == 2:
         cloud = AliApi(SECRETID, SECRETKEY)
+    elif DNS_SERVER == 3:
+        cloud = HuaWeiApi(SECRETID, SECRETKEY)
     main(cloud)

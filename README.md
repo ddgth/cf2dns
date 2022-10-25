@@ -1,3 +1,10 @@
+### 新增支持华为云DNS ——update 2022.10.25
+> 使用方法
+
+   1. 安装依赖 **`pip install -r requirements.txt`**
+
+   2. 修改配置文件 **`DNS_SERVER`** **`SECRETID`**  **`SECRETKEY`**
+
 ### 新增优选IPv6功能 ——update 2022.07.06
 > 使用方法
 
