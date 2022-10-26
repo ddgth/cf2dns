@@ -160,30 +160,18 @@ def main(cloud):
                         ab_info = []
                         def_info = []
                         for record in ret["data"]["records"]:
+                            info = {}
+                            info["recordId"] = record["id"]
+                            info["value"] = record["value"]
                             if record["line"] == "移动":
-                                info = {}
-                                info["recordId"] = record["id"]
-                                info["value"] = record["value"]
                                 cm_info.append(info)
-                            if record["line"] == "联通":
-                                info = {}
-                                info["recordId"] = record["id"]
-                                info["value"] = record["value"]
+                            elif record["line"] == "联通":
                                 cu_info.append(info)
-                            if record["line"] == "电信":
-                                info = {}
-                                info["recordId"] = record["id"]
-                                info["value"] = record["value"]
+                            elif record["line"] == "电信":
                                 ct_info.append(info)
-                            if record["line"] == "境外":
-                                info = {}
-                                info["recordId"] = record["id"]
-                                info["value"] = record["value"]
+                            elif record["line"] == "境外":
                                 ab_info.append(info)
-                            if record["line"] == "默认":
-                                info = {}
-                                info["recordId"] = record["id"]
-                                info["value"] = record["value"]
+                            elif record["line"] == "默认":
                                 def_info.append(info)
                         for line in lines:
                             if line == "CM":
