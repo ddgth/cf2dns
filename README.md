@@ -3,7 +3,7 @@
 
    1. 安装依赖 **`pip install -r requirements.txt`**
 
-   2. 修改配置文件 **`DNS_SERVER`** **`SECRETID`**  **`SECRETKEY`**
+   2. 修改配置文件 **`DNS_SERVER`** **`SECRETID`**  **`SECRETKEY`** **`REGION_HW`**
 
 ### 新增优选IPv6功能 ——update 2022.07.06
 > 使用方法

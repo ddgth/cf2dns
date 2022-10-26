@@ -27,6 +27,12 @@ AFFECT_NUM = 2
 #DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2  如果使用华为云解析改成3
 DNS_SERVER = 1
 
+#如果使用华为云解析 需要从API凭证-项目列表中获取
+REGION_HW = 'cn-east-3'
+
+#如果使用阿里云解析 REGION出现错误再修改 默认不需要修改 https://help.aliyun.com/document_detail/198326.html
+REGION_ALI = 'cn-hongkong'
+
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
 TTL = 600
 
@@ -192,7 +198,7 @@ if __name__ == '__main__':
     if DNS_SERVER == 1:
         cloud = QcloudApi(SECRETID, SECRETKEY)
     elif DNS_SERVER == 2:
-        cloud = AliApi(SECRETID, SECRETKEY)
+        cloud = AliApi(SECRETID, SECRETKEY, REGION_ALI)
     elif DNS_SERVER == 3:
-        cloud = HuaWeiApi(SECRETID, SECRETKEY)
+        cloud = HuaWeiApi(SECRETID, SECRETKEY, REGION_HW)
     main(cloud)
