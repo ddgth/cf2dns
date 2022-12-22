@@ -30,7 +30,7 @@ REGION_ALI = 'cn-hongkong'
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
 TTL = 600
 #v4为筛选出IPv4的IP  v6为筛选出IPv6的IP
-TYPE = 'v4'
+TYPE = 'v6'
 
 urllib3.disable_warnings()
 
