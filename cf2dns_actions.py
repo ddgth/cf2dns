@@ -32,6 +32,7 @@ TTL = 600
 #v4为筛选出IPv4的IP  v6为筛选出IPv6的IP
 TYPE = 'v4'
 
+
 urllib3.disable_warnings()
 
 def get_optimization_ip():
