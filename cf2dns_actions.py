@@ -52,7 +52,10 @@ REGION_ALI = 'cn-hongkong'
 # 解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
 TTL = 600
 # A为筛选出IPv4的IP  AAAA为筛选出IPv6的IP
-RECORD_TYPE = 'A'
+if len(sys.argv) >= 3:
+    RECORD_TYPE = sys.argv[2]
+else:
+    RECORD_TYPE = "A"
 
 
 def get_optimization_ip():
