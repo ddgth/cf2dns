@@ -20,3 +20,7 @@ cf2dns.log
 *.njsproj
 *.sln
 *.sw?
+
+config.json
+cf2dns.log
+cf2dns.log
