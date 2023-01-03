@@ -4,6 +4,7 @@
 import random
 import time
 import os
+import sys
 import requests
 from dns.qCloud import QcloudApiv3  # QcloudApiv3 DNSPod 的 API 更新了...
 from dns.aliyun import AliApi
@@ -106,6 +107,7 @@ def main(cloud):
             if cfips == None:
                 log_error(f'GET CLOUDFLARE IP ERROR')
                 return
+            print(cfips)
             cf_cmips = cfips["info"]["CM"]
             cf_cuips = cfips["info"]["CU"]
             cf_ctips = cfips["info"]["CT"]
