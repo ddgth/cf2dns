@@ -94,11 +94,12 @@ SECRETKEY = conf["secret_key"]
 
 def get_optimization_ip():
     try:
-
         response = requests.post('https://api.hostmonit.com/get_optimization_ip', json={
                                  "key": KEY, "type": "v4" if RECORD_TYPE == "A" else "v6"}, headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
-            return response.json()
+            resp_json = response.json()
+            if resp_json["code"] == 200:
+                return resp_json
         else:
             log_error(f'获取 Cloudflare IP 失败 {response.status_code}')
     except Exception as e:

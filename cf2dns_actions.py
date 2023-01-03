@@ -11,6 +11,8 @@ from dns.huawei import HuaWeiApi
 import logging
 import traceback
 import json
+import sys
+
 
 log_cf2dns = logging.basicConfig(filename='cf2dns.log',
                                  format='%(asctime)s - %(levelname)s - %(message)s',
@@ -52,16 +54,22 @@ REGION_ALI = 'cn-hongkong'
 # 解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
 TTL = 600
 # A为筛选出IPv4的IP  AAAA为筛选出IPv6的IP
-RECORD_TYPE = 'A'
+if len(sys.argv) >= 3:
+    RECORD_TYPE = sys.argv[2]
+else:
+    RECORD_TYPE = "A"
 
 
 def get_optimization_ip():
     try:
-
         response = requests.post('https://api.hostmonit.com/get_optimization_ip', json={
                                  "key": KEY, "type": "v4" if RECORD_TYPE == "A" else "v6"}, headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
-            return response.json()
+            resp_json = response.json()
+            if resp_json["code"] == 200:
+                return resp_json
+            else:
+                log_error(f'获取 Cloudflare IP 失败 Code: {resp_json["code"]} {resp_json["info"]}')
         else:
             log_error(f'获取 Cloudflare IP 失败 {response.status_code}')
     except Exception as e:
