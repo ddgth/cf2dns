@@ -61,7 +61,6 @@ else:
 
 def get_optimization_ip():
     try:
-
         response = requests.post('https://api.hostmonit.com/get_optimization_ip', json={
                                  "key": KEY, "type": "v4" if RECORD_TYPE == "A" else "v6"}, headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
@@ -102,6 +101,7 @@ def main(cloud):
             if cfips == None:
                 log_error(f'GET CLOUDFLARE IP ERROR')
                 return
+            print(cfips)
             cf_cmips = cfips["info"]["CM"]
             cf_cuips = cfips["info"]["CU"]
             cf_ctips = cfips["info"]["CT"]
