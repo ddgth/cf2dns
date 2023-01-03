@@ -107,7 +107,6 @@ def main(cloud):
             if cfips == None:
                 log_error(f'GET CLOUDFLARE IP ERROR')
                 return
-            print(cfips)
             cf_cmips = cfips["info"]["CM"]
             cf_cuips = cfips["info"]["CU"]
             cf_ctips = cfips["info"]["CT"]
