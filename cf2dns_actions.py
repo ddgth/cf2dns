@@ -4,6 +4,7 @@
 import random
 import time
 import os
+import sys
 import requests
 from dns.qCloud import QcloudApiv3  # QcloudApiv3 DNSPod 的 API 更新了...
 from dns.aliyun import AliApi
