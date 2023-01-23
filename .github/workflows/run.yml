@@ -1,4 +1,4 @@
-name: 'IPV4'
+name: 'CF Ip 2 Dnspod'
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 env:
   UPDATE_IPV4: true
-  UPDATE_IPV6: false
+  UPDATE_IPV6: true
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
       - name: 'run cf2dns v6'
         if: env.UPDATE_IPV6 == 'true' && !cancelled()
         env:
-          KEY: ${{ secrets.KEY }}
+          KEY: ${{ secrets.KEYV6 }}
           DOMAINS: ${{ secrets.DOMAINSV6 }}
           SECRETID: ${{ secrets.SECRETID }}
           SECRETKEY: ${{ secrets.SECRETKEY }}
