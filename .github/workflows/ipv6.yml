@@ -1,4 +1,4 @@
-name: 'GitHub Actions CloudFlare2DNSPod Bot Ipv6'
+name: 'IPV6'
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
       - name: 'run cf2dns v6'
         if: env.UPDATE_IPV6 == 'true' && !cancelled()
         env:
-          KEY: ${{ secrets.KEY }}
+          KEY: ${{ secrets.KEYV6 }}
           DOMAINS: ${{ secrets.DOMAINSV6 }}
           SECRETID: ${{ secrets.SECRETID }}
           SECRETKEY: ${{ secrets.SECRETKEY }}
