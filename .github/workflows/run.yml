@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: 'Set up Python'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.7
       - name: 'Install dependencies'
@@ -29,7 +29,7 @@ jobs:
           DOMAINS: ${{ secrets.DOMAINS }}
           SECRETID: ${{ secrets.SECRETID }}
           SECRETKEY: ${{ secrets.SECRETKEY }}
-        run: python cf2dns_actions.py
+        run: python cf2dns_actions.py A
       - name: 'run cf2dns v6'
         if: env.UPDATE_IPV6 == 'true' && !cancelled()
         env:
@@ -37,6 +37,4 @@ jobs:
           DOMAINS: ${{ secrets.DOMAINSV6 }}
           SECRETID: ${{ secrets.SECRETID }}
           SECRETKEY: ${{ secrets.SECRETKEY }}
-        run:  |
-          sed -i "s/TYPE = 'v4'/TYPE = 'v6'/" cf2dns_actions.py
-          python cf2dns_actions.py
+        run: python cf2dns_actions.py AAAA
