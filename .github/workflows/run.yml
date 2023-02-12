@@ -8,7 +8,7 @@ on:
     - cron: '*/16 * * * *'
 
 env:
-  UPDATE_IPV4: false
+  UPDATE_IPV4: true
   UPDATE_IPV6: false
 jobs:
   build:
