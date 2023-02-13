@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Mail: tongdongdong@outlook.com
 # Reference: https://cloud.tencent.com/document/product/302/8517
+# QcloudApiv3 DNSPod 的 API 更新了 By github@z0z0r4
 
 import json
 from tencentcloud.common import credential
@@ -44,7 +45,8 @@ class QcloudApiv3():
             params = {
                 "Domain": domain,
                 "Subdomain": sub_domain,
-                "RecordType": record_type
+                "RecordType": record_type,
+                "Limit": length
             }
             req_model.from_json_string(json.dumps(params))
 
