@@ -93,7 +93,7 @@ python cf2dns.py
 
 2. Fork本项目到自己的仓库![fork.png](https://img.hostmonit.com/images/2020/11/05/fork.png)
 
-3. 进入第二步中Fork的项目，点击Settings->Secrets-New secret，分别是DOMAINS，KEY，SECRETID，SECRETKEY。
+3. 进入第二步中Fork的项目，点击Settings->Secrets and variables-> Actions -> New repository secret，分别是DOMAINS，KEY，SECRETID，SECRETKEY。
 
    > - DOMAINS  需改域名信息，填写时注意不要有换行  例如：`{"hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},"4096.me": {"@": ["CM","CU","CT"], "vv":["CM","CU","CT"]}}`
    > - DOMAINSV6 如果需要更新AAA解析请增加此secrets，格式同DOMAINS。
