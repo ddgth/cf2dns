@@ -3,9 +3,9 @@ name: 'GitHub Actions CloudFlare2DNSPod Bot'
 on:
   push:
     branches: 
-      - master
+      - addline
   schedule:
-    - cron: '*/16 * * * *'
+    - cron: '*/5 * * * *'
 
 env:
   UPDATE_IPV4: true
