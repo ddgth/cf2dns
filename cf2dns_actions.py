@@ -14,10 +14,10 @@ import sys
 KEY = os.environ["KEY"]  #"o1zrmHAF"
 #CM:移动 CU:联通 CT:电信 AB:境外 DEF:默认
 #修改需要更改的dnspod域名和子域名
-DOMAINS = json.loads(os.environ["DOMAINS"])  #{"hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},"4096.me": {"@": ["CM","CU","CT"], "vv": ["CM","CU","CT"]}}
+DOMAINS = json.loads(os.environ["DOMAINS"])  #{"zetural.site":{"@":["CM","CU","CT"]}}
 #腾讯云后台获取 https://console.cloud.tencent.com/cam/capi
-SECRETID = os.environ["SECRETID"]    #'AKIDV**********Hfo8CzfjgN'
-SECRETKEY = os.environ["SECRETKEY"]   #'ZrVs*************gqjOp1zVl'
+SECRETID = os.environ["SECRETID"]    #'LTAI5tDuXizc2DFnWTdUD48g'
+SECRETKEY = os.environ["SECRETKEY"]   #'l43FzCvbG3YtgqPmG38SDCqdfKNWUQ'
 #默认为普通版本 不用修改
 AFFECT_NUM = 2
 #DNS服务商 如果使用DNSPod改为1 如果使用阿里云解析改成2  如果使用华为云解析改成3
