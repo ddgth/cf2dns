@@ -16,12 +16,6 @@
 
 
 
-wget --no-check-certificate -qO ./config.ini https://raw.githubusercontent.com/ddgth/cf2dns/master/docker/src/config.ini
-
-根据注释修改config.ini配置文件
-
-docker run -d -v ./cf2dns_docker/src/config.ini:/cf2dns/src/config.ini -v ./cf2dns_docker/logs:/cf2dns/logs cf2dns
-
 ### 修复腾讯云 DNS 无法调用 --update 2023.1.3
 
    [API 2.0下线通知](https://cloud.tencent.com/document/product/1278/82311) By github@z0z0r4
@@ -132,9 +126,9 @@ python cf2dns.py
 4. 修改您项目中的 `cf2dns_actions.py`文件中的`AFFECT_NUM`和`DNS_SERVER`参数，继续修改`.github/workflows/run.yml` 文件，定时执行的时长(建议15分钟执行一次)，最后点击 `start commit` 提交即可在Actions中的build查看到执行情况，如果看到 `cf2dns` 执行日志中有 `CHANGE DNS SUCCESS` 详情输出，即表示运行成功。**需要注意观察下次定时是否能正确运行，有时候GitHub Actions 挺抽风的**
    
    ![modify.png](https://img.hostmonit.com/images/2020/11/05/modify.png)
-
+   
    ![commit.png](https://img.hostmonit.com/images/2020/11/05/commit.png)
-
+   
    ![build.png](https://img.hostmonit.com/images/2020/11/05/build.png)
 
 ### 免责声明
