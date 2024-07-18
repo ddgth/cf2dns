@@ -27,7 +27,7 @@ REGION_HW = 'cn-east-3'
 #如果使用阿里云解析 REGION出现错误再修改 默认不需要修改 https://help.aliyun.com/document_detail/198326.html
 REGION_ALI = 'cn-hongkong'
 #解析生效时间，默认为600秒 如果不是DNS付费版用户 不要修改!!!
-TTL = 60
+TTL = 600
 #v4为筛选出IPv4的IP  v6为筛选出IPv6的IP
 if len(sys.argv) >= 2:
     RECORD_TYPE = sys.argv[1]
