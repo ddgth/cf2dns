@@ -1,23 +1,46 @@
+### 增加dddb/cf2dns docker镜像  --update 2024.6.4
+
+> 使用方法
+
+1. 拉取cf2dns docker镜像 `docker pull dddb/cf2dns`
+
+2. 新建cf2dns_docker工作路径 `cd ~ && mkdir -p cf2dns_docker/logs && cd cf2dns_docker`
+
+3. 下载所需配置文件 `wget --no-check-certificate -qO ./config.ini https://raw.githubusercontent.com/ddgth/cf2dns/master/docker/src/config.ini`
+
+4. 根据注释修改`config.ini`配置文件
+
+5. 运行docker镜像 `docker run -d -v ~/cf2dns_docker/config.ini:/cf2dns/src/config.ini -v ~/cf2dns_docker/logs:/cf2dns/logs dddb/cf2dns`
+
+6. 查看运行日志 `tail -100f ~/cf2dns_docker/logs/cf2dns.log`
+
+
+
 ### 修复腾讯云 DNS 无法调用 --update 2023.1.3
+
    [API 2.0下线通知](https://cloud.tencent.com/document/product/1278/82311) By github@z0z0r4
-   
+
 ### 新增支持Actions自选更新V4或V6 ——update 2022.12.19
+
 > 使用方法
 
-   1. 修改 **`.github/workflows/run.yml`**
+1. 修改 **`.github/workflows/run.yml`**
 
-   2. 新增secret **`DOMAINSV6`**
-### 新增支持华为云DNS ——update 2022.10.25
-> 使用方法
+2. 新增secret **`DOMAINSV6`**
+   
+   ### 新增支持华为云DNS ——update 2022.10.25
+   
+   > 使用方法
 
-   1. 安装依赖 **`pip install -r requirements.txt`**
+3. 安装依赖 **`pip install -r requirements.txt`**
 
-   2. 修改配置文件 **`DNS_SERVER`** **`SECRETID`**  **`SECRETKEY`** **`REGION_HW`**
+4. 修改配置文件 **`DNS_SERVER`** **`SECRETID`**  **`SECRETKEY`** **`REGION_HW`**
 
 ### 新增优选IPv6功能 ——update 2022.07.06
+
 > 使用方法
 
-​	更新代码，修改脚本中的 `TYPE` 参数即可
+​    更新代码，修改脚本中的 `TYPE` 参数即可
 
 ### 新增默认线路记录 ——update 2021.12.15
 
@@ -33,7 +56,7 @@
 
 > 实现方式
 
-​	之前不管您使用免费的key还是付费的key所筛选出来的Cloudflare IP都是多人共享的，如果其中有人的网站刚好被假墙，而您自选出来的IP刚好和他的相同，那么您的网站也有被假墙的风险，当然我也使用了各种手动去解决这个方法，比如增加接口返回IP数、随机获取优选IP等，但最总还是不能完全杜绝这情况的发现，所以现增加了一个优选IP池，只需在您的key后面加上 **`fgfw`** ,您就会每次执行脚本都能获取到**最新的独享优选IP**，由于这需要消耗更多的服务器硬件和带宽资源，那么每次调用获取最新的独享优选IP时，您只能获取到每个运营商的**2条**优选记录，并且每次调用您将消耗更多的key调用次数，执行频率建议与您DNS服务商的最小TTL保持一直（记得把脚本中的TTL参数也修改了）。
+​    之前不管您使用免费的key还是付费的key所筛选出来的Cloudflare IP都是多人共享的，如果其中有人的网站刚好被假墙，而您自选出来的IP刚好和他的相同，那么您的网站也有被假墙的风险，当然我也使用了各种手动去解决这个方法，比如增加接口返回IP数、随机获取优选IP等，但最总还是不能完全杜绝这情况的发现，所以现增加了一个优选IP池，只需在您的key后面加上 **`fgfw`** ,您就会每次执行脚本都能获取到**最新的独享优选IP**，由于这需要消耗更多的服务器硬件和带宽资源，那么每次调用获取最新的独享优选IP时，您只能获取到每个运营商的**2条**优选记录，并且每次调用您将消耗更多的key调用次数，执行频率建议与您DNS服务商的最小TTL保持一直（记得把脚本中的TTL参数也修改了）。
 
 > 使用方法：
 
@@ -48,7 +71,6 @@
 
 **详细的使用场景请移步我的[小站](https://blog.hostmonit.com/cloudflare-select-ip-plus/)**
 
-
 ### 适用人群
 
 1. 小站长，网站经常被打或网站放置在国外需要稳定且速度相对快的CDN
@@ -58,9 +80,9 @@
 ### 使用方法
 
 >  必要条件: 
->
+> 
 >  ★ Cloudflare自选IP并已接入到DNSPod或阿里云DNS，不知道怎么自选IP可以查看这个[教程](https://blog.hostmonit.com/manually-select-ip/)
->
+> 
 >  ★ Python3、pip环境
 
 #### 方法一：在自己的VPS或电脑中运行（推荐）
@@ -85,8 +107,6 @@ pip install -r requirements.txt
 python cf2dns.py
 ```
 
-
-
 #### 方法二：GitHub Actions 运行
 
 1. 登录[腾讯云后台](https://console.cloud.tencent.com/cam/capi)或者[阿里云后台](https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53),获取 SecretId、SecretKey，如果使用阿里云DNS，注意需要添加DNS控制权限**AliyunDNSFullAccess**
@@ -94,33 +114,29 @@ python cf2dns.py
 2. Fork本项目到自己的仓库![fork.png](https://img.hostmonit.com/images/2020/11/05/fork.png)
 
 3. 进入第二步中Fork的项目，点击Settings->Secrets and variables-> Actions -> New repository secret，分别是DOMAINS，KEY，SECRETID，SECRETKEY。
-
+   
    > - DOMAINS  需改域名信息，填写时注意不要有换行  例如：`{"hostmonit.com": {"@": ["CM","CU","CT"], "shop": ["CM", "CU", "CT"], "stock": ["CM","CU","CT"]},"4096.me": {"@": ["CM","CU","CT"], "vv":["CM","CU","CT"]}}`
    > - DOMAINSV6 如果需要更新AAA解析请增加此secrets，格式同DOMAINS。
    > - KEY      API密钥，从[商店](https://shop.hostmonit.com)购买KEY，也可以使用这个KEY `o1zrmHAF` ，区别是 `o1zrmHAF` 是历史优选的Cloudflare IP(也可以从这个[网站](https://stock.hostmonit.com/CloudFlareYes)查到IP的信息)，而购买的KEY是15分钟内获取到的对各运营商速度最优的的Cloudflare IP
    > - SECRETID  第一部中从[腾讯云后台](https://console.cloud.tencent.com/cam/capi)或者[阿里云后台](https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53),获取到的 `SECRETID  `
    > - SECRETKEY  第一部中从[腾讯云后台](https://console.cloud.tencent.com/cam/capi)或者[阿里云后台](https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.11.2c6a2fbdh13O53),获取到的 `SECRETKEY`
-
+   
    ![secret.png](https://img.hostmonit.com/images/2023/03/04/actions.png)
 
 4. 修改您项目中的 `cf2dns_actions.py`文件中的`AFFECT_NUM`和`DNS_SERVER`参数，继续修改`.github/workflows/run.yml` 文件，定时执行的时长(建议15分钟执行一次)，最后点击 `start commit` 提交即可在Actions中的build查看到执行情况，如果看到 `cf2dns` 执行日志中有 `CHANGE DNS SUCCESS` 详情输出，即表示运行成功。**需要注意观察下次定时是否能正确运行，有时候GitHub Actions 挺抽风的**
-
-   ![modify.png](https://img.hostmonit.com/images/2020/11/05/modify.png)
-
-
-   ![commit.png](https://img.hostmonit.com/images/2020/11/05/commit.png)
-
    
-
+   ![modify.png](https://img.hostmonit.com/images/2020/11/05/modify.png)
+   
+   ![commit.png](https://img.hostmonit.com/images/2020/11/05/commit.png)
+   
    ![build.png](https://img.hostmonit.com/images/2020/11/05/build.png)
 
 ### 免责声明
 
 > 1.网络环境错综复杂，适合我的不一定适合你，所以尽量先尝试免费的KEY或者购买试用版的KEY
->
+> 
 > 2.有什么问题和建议请提issue或者Email我，不接受谩骂、扯皮、吐槽
->
+> 
 > 3.为什么收费？ 这个标价我也根本不指望赚钱，甚至不够我国内一台VDS的钱。
->
+> 
 > ★ 如果当前DNSPod有移动、联通、电信线路的解析将会覆盖掉
-
